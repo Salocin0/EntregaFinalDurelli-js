@@ -1,0 +1,73 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+
+i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.formulario {
+    display: none;
+    display: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 400px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 0 0 10px 10px;
+    margin-top: 9px;
+    background-color: #292C3E;
+    color: white;
+    z-index: 999;
+}
+
+.carrito {
+    display: none;
+    display: hidden;
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0;
+    width: 550px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 0 0 10px 10px;
+    margin-top: 12px;
+    background-color: #292C3E;
+    color: white;
+    z-index: 999;
+}
+
+.badge {
+    color: black;
+}
+
+#numeroCarrito {
+    color: white;
+}
+
+.align-right {
+    float: right;
+}
+
+body {
+    color: white;
+    background-color: #384155;
+}
+
+.tabla {
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 0%;
+    margin-right: 20px;
+  }
