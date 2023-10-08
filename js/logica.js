@@ -292,25 +292,18 @@ function actualizarTabla() {
 }
 //funcion para mostrar un toast personalizado
 function mostrarToast(mensaje) {
-  var toast = document.createElement("div");
-  toast.className = "toast align-items-center text-white bg-success border-0";
-  toast.setAttribute("role", "alert");
-  toast.setAttribute("aria-live", "assertive");
-  toast.setAttribute("aria-atomic", "true");
-
-  toast.innerHTML = `
-    <div class="d-flex">
-      <div class="toast-body">
-        ${mensaje}
-      </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-  `;
-
-  document.body.appendChild(toast);
-
-  var toastElement = new bootstrap.Toast(toast);
-  toastElement.show();
+  Toastify({
+    text: mensaje,
+    duration: 3000,
+    newWindow: true,
+    close: true,
+    gravity: "bottom",
+    position: "right",
+    stopOnFocus: true,
+    style: {
+      background:"#00b09b",
+    },
+  }).showToast();
 }
 //funcion para borrar el carrito
 function borrarCarrito(mensaje, event) {
@@ -446,15 +439,14 @@ async function cargarProductosDesdeLocalStorage() {
     return productos;
   }
 }
-
-
+//funcion para cargar el contenido de carrito desde el local storage
 function cargarCarritoDesdeLocalStorage() {
   const carritoGuardado = localStorage.getItem("carrito");
   if (carritoGuardado) {
     carrito = JSON.parse(carritoGuardado);
   }
 }
-
+//funcion para cargar el contenido de productos desde el json
 async function cargarProductosJson() {
   return fetch('./js/productos.json')
     .then(response => {return response.json();
