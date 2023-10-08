@@ -1,100 +1,7 @@
-// Array de productos en la tienda por defecto
-let productosPorDefecto = [
-  {
-    id: 1,
-    nombre: "Laptop HP",
-    precio: 799.99,
-    descripcion: "Portátil de alta gama con pantalla HD y procesador rápido.",
-    stock: 20,
-    habilitado: 1,
-  },
-  {
-    id: 2,
-    nombre: "Teléfono Samsung Galaxy",
-    precio: 499.0,
-    descripcion:
-      "Smartphone Android con cámara de alta resolución y pantalla AMOLED.",
-    stock: 15,
-    habilitado: 1,
-  },
-  {
-    id: 3,
-    nombre: "Smart TV LG",
-    precio: 599.99,
-    descripcion:
-      "Televisor inteligente con pantalla 4K y aplicaciones integradas.",
-    stock: 10,
-    habilitado: 1,
-  },
-  {
-    id: 4,
-    nombre: "Cámara Canon EOS",
-    precio: 899.0,
-    descripcion:
-      "Cámara DSLR con lente intercambiable y grabación de video en Full HD.",
-    stock: 8,
-    habilitado: 1,
-  },
-  {
-    id: 5,
-    nombre: "Auriculares Sony",
-    precio: 149.99,
-    descripcion:
-      "Auriculares inalámbricos con cancelación de ruido y sonido de alta calidad.",
-    stock: 25,
-    habilitado: 1,
-  },
-  {
-    id: 6,
-    nombre: "Tableta Samsung Galaxy Tab",
-    precio: 299.99,
-    descripcion:
-      "Tableta Android con pantalla táctil y batería de larga duración.",
-    stock: 12,
-    habilitado: 1,
-  },
-  {
-    id: 7,
-    nombre: "Refrigeradora Whirlpool",
-    precio: 899.0,
-    descripcion:
-      "Refrigeradora de acero inoxidable con dispensador de agua y hielo.",
-    stock: 6,
-    habilitado: 1,
-  },
-  {
-    id: 8,
-    nombre: "Impresora Epson",
-    precio: 129.95,
-    descripcion:
-      "Impresora láser a color con conectividad Wi-Fi y escaneo rápido.",
-    stock: 18,
-    habilitado: 1,
-  },
-  {
-    id: 9,
-    nombre: "Consola de Juegos Xbox",
-    precio: 399.99,
-    descripcion:
-      "Consola de juegos con capacidad 4K y amplia biblioteca de juegos.",
-    stock: 14,
-    habilitado: 1,
-  },
-  {
-    id: 10,
-    nombre: "Bicicleta de Montaña",
-    precio: 499.0,
-    descripcion:
-      "Bicicleta todoterreno con cuadro de aluminio y suspensiones delanteras.",
-    stock: 9,
-    habilitado: 1,
-  },
-];
-
 //array de productos en carrito
 let carrito = [];
 //array de productos en tienda
-let productos= [];
+let productos = [];
 //variables de forms
 let formularioVisible = false;
 let carritoVisible = false;
@@ -141,8 +48,9 @@ const formAgregarProducto = `
 window.addEventListener("load", () => {
   productos = cargarProductosDesdeLocalStorage();
   cargarCarritoDesdeLocalStorage();
-  actualizarCarrito()
+  actualizarCarrito();
   agregarProductosAlDOM(productos);
+  divTablaCarrito.style.display = "none";
 });
 buscador.addEventListener("input", () => {
   filtrarProductos(buscador.value, precioMinimo.value, precioMaximo.value);
@@ -210,28 +118,38 @@ window.addEventListener("click", (e) => {
 });
 
 // Función para agregar productos al DOM
-function agregarProductosAlDOM(arrayProductos) {
-  console.log(arrayProductos)
-  arrayProductos.forEach((producto) => {
-    if (producto.habilitado === 1) {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${producto.nombre}</td>
-        <td>$${producto.precio}</td>
-        <td>${producto.descripcion}</td>
-        <td>${producto.stock}</td>
-        <td>
-          <button class="btn btn-primary" onclick="agregarProductosACarrito(${producto.id})">
-            <i class="bi bi-plus-circle"></i>
-          </button>
-          <button class="btn btn-danger" onclick="eliminarProducto(${producto.id})">
-            <i class="bi bi-trash"></i>
-          </button>
-        </td>
-        `;
-      tbody.appendChild(row);
+async function agregarProductosAlDOM(arrayProductosPromise) {
+  try {
+    const arrayProductos = await arrayProductosPromise;
+
+    if (!Array.isArray(arrayProductos)) {
+      console.error("arrayProductos is not an array:", arrayProductos);
+      return;
     }
-  });
+
+    arrayProductos.forEach((producto) => {
+      if (producto.habilitado === 1) {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${producto.nombre}</td>
+          <td>$${producto.precio}</td>
+          <td>${producto.descripcion}</td>
+          <td>${producto.stock}</td>
+          <td>
+            <button class="btn btn-primary" onclick="agregarProductosACarrito(${producto.id})">
+              <i class="bi bi-plus-circle"></i>
+            </button>
+            <button class="btn btn-danger" onclick="eliminarProducto(${producto.id})">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+          `;
+        tbody.appendChild(row);
+      }
+    });
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 //funcion para vaciar la tabla
 function vaciarTabla() {
@@ -246,8 +164,9 @@ function vaciarCarrito() {
   }
 }
 //funcion para agregar productos al carrito
-function agregarProductosACarrito(productoId, event) {
-  console.log(productos,carrito)
+async function agregarProductosACarrito(productoId, event) {
+  const productos = await cargarProductosDesdeLocalStorage();
+  console.log(productos);
   const productoEncontrado = productos.find(
     (producto) => producto.id === productoId
   );
@@ -318,10 +237,11 @@ function actualizarCarrito() {
   vaciarCarrito();
   cargarProductosEnCarrito();
   cantidadEnCarrito(carrito.length);
-  guardarCarritoLocal(carrito)
+  guardarCarritoLocal(carrito);
 }
 //funcion para eliminar un producto completo del carrito
 function eliminarProductoDeCarrito(productoId, event) {
+  console.log(productos)
   productoExistente = productos.find((producto) => producto.id === productoId);
   productoCart = carrito.find((producto) => producto.id === productoId);
   productoExistente.habilitado = 1;
@@ -394,10 +314,10 @@ function mostrarToast(mensaje) {
 }
 //funcion para borrar el carrito
 function borrarCarrito(mensaje, event) {
-  carrito.forEach(producto => {
-    eliminarProductoDeCarrito(producto.id,event)
-  })
-  mostrarToast("carrito vaciado")
+  carrito.forEach((producto) => {
+    eliminarProductoDeCarrito(producto.id, event);
+  });
+  mostrarToast("carrito vaciado");
 }
 //funcion para cargar los productos en el carrito
 function cargarProductosEnCarrito() {
@@ -481,7 +401,7 @@ function agregarProductosATienda(event) {
     precio: Number(precio),
     stock: Number(stock),
     descripcion: descripcion,
-    habilitado: 1
+    habilitado: 1,
   });
 
   actualizarTabla();
@@ -501,33 +421,44 @@ function cerrarFormCarrito() {
   carritoVisible = false;
 }
 //funcion para finalizar la compra
-function finalizarCompra(){
+function finalizarCompra() {
   carrito = [];
   actualizarCarrito();
-  mostrarToast("Compra realizada")
+  mostrarToast("Compra realizada");
 }
 //funcion para guardar el contenido de carrito en el local storage
 function guardarCarritoLocal(carrito) {
-  localStorage.setItem('carrito', JSON.stringify(carrito));
+  localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 //funcion para guardar el contenido de productos en el local storage
 function guardarProductosLocal(productos) {
-  localStorage.setItem('productos', JSON.stringify(productos));
+  localStorage.setItem("productos", JSON.stringify(productos));
 }
 //funcion para cargar el contenido de productos desde el local storage
-function cargarProductosDesdeLocalStorage() {
-  const productosGuardados = localStorage.getItem('productos');
+async function cargarProductosDesdeLocalStorage() {
+  const productosGuardados = localStorage.getItem("productos");
   if (productosGuardados) {
-    return JSON.parse(productosGuardados);
+    productos = JSON.parse(productosGuardados);
+    return productos
   } else {
-    localStorage.setItem('productos', JSON.stringify(productosPorDefecto));
-    return productosPorDefecto;
+    productos = await cargarProductosJson();
+    localStorage.setItem("productos", JSON.stringify(productos));
+    return productos;
   }
 }
+
+
 function cargarCarritoDesdeLocalStorage() {
-  const carritoGuardado = localStorage.getItem('carrito');
+  const carritoGuardado = localStorage.getItem("carrito");
   if (carritoGuardado) {
     carrito = JSON.parse(carritoGuardado);
   }
 }
 
+async function cargarProductosJson() {
+  return fetch('./js/productos.json')
+    .then(response => {return response.json();
+    }).catch(error => {
+      console.error('Error:', error);
+    });
+}

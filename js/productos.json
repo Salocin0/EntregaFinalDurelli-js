@@ -1,0 +1,82 @@
+[
+    {
+      "id": 1,
+      "nombre": "Laptop HP",
+      "precio": 799.99,
+      "descripcion": "Portátil de alta gama con pantalla HD y procesador rápido.",
+      "stock": 20,
+      "habilitado": 1
+    },
+    {
+      "id": 2,
+      "nombre": "Teléfono Samsung Galaxy",
+      "precio": 499.0,
+      "descripcion": "Smartphone Android con cámara de alta resolución y pantalla AMOLED.",
+      "stock": 15,
+      "habilitado": 1
+    },
+    {
+      "id": 3,
+      "nombre": "Smart TV LG",
+      "precio": 599.99,
+      "descripcion": "Televisor inteligente con pantalla 4K y aplicaciones integradas.",
+      "stock": 10,
+      "habilitado": 1
+    },
+    {
+      "id": 4,
+      "nombre": "Cámara Canon EOS",
+      "precio": 899.0,
+      "descripcion": "Cámara DSLR con lente intercambiable y grabación de video en Full HD.",
+      "stock": 8,
+      "habilitado": 1
+    },
+    {
+      "id": 5,
+      "nombre": "Auriculares Sony",
+      "precio": 149.99,
+      "descripcion": "Auriculares inalámbricos con cancelación de ruido y sonido de alta calidad.",
+      "stock": 25,
+      "habilitado": 1
+    },
+    {
+      "id": 6,
+      "nombre": "Tableta Samsung Galaxy Tab",
+      "precio": 299.99,
+      "descripcion": "Tableta Android con pantalla táctil y batería de larga duración.",
+      "stock": 12,
+      "habilitado": 1
+    },
+    {
+      "id": 7,
+      "nombre": "Refrigeradora Whirlpool",
+      "precio": 899.0,
+      "descripcion": "Refrigeradora de acero inoxidable con dispensador de agua y hielo.",
+      "stock": 6,
+      "habilitado": 1
+    },
+    {
+      "id": 8,
+      "nombre": "Impresora Epson",
+      "precio": 129.95,
+      "descripcion": "Impresora láser a color con conectividad Wi-Fi y escaneo rápido.",
+      "stock": 18,
+      "habilitado": 1
+    },
+    {
+      "id": 9,
+      "nombre": "Consola de Juegos Xbox",
+      "precio": 399.99,
+      "descripcion": "Consola de juegos con capacidad 4K y amplia biblioteca de juegos.",
+      "stock": 14,
+      "habilitado": 1
+    },
+    {
+      "id": 10,
+      "nombre": "Bicicleta de Montaña",
+      "precio": 499.0,
+      "descripcion": "Bicicleta todoterreno con cuadro de aluminio y suspensiones delanteras.",
+      "stock": 9,
+      "habilitado": 1
+    }
+  ]  
